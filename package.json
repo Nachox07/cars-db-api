@@ -1,0 +1,49 @@
+{
+  "name": "cars-db-api",
+  "version": "1.0.0",
+  "description": "An API to manage a cars database",
+  "main": "./dist/index.js",
+  "scripts": {
+    "build": "yarn run clean:build && tsc -b ./tsconfig.build.json",
+    "clean:build": "rm -rf dist",
+    "clean:installation": "rm -rf node_modules ",
+    "clean": "run-p clean:*",
+    "start": "yarn build && NODE_ENV=development node dist/index.js",
+    "start:dev": "TS_NODE_FILES=true NODE_ENV=development PORT=8001 nodemon --watch 'src/**/*.ts' --exec 'node --inspect=0.0.0.0:9230 -r ts-node/register' src/index.ts",
+    "test": "run-s test:*",
+    "test:types": "tsc -p ./tsconfig.json --noEmit",
+    "test:lint": "eslint './src/**/*.ts' --fix",
+    "test:unit": "jest --verbose src",
+    "prettier:fix": "prettier -w ./src/**/*.ts"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Nachox07/cars-db-api.git"
+  },
+  "engine": {
+    "node": ">=14",
+    "yarn": "^1.22"
+  },
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/Nachox07/cars-db-api/issues"
+  },
+  "homepage": "https://github.com/Nachox07/cars-db-api#readme",
+  "devDependencies": {
+    "@types/jest": "^26.0.23",
+    "@typescript-eslint/eslint-plugin": "^4.4.1",
+    "@typescript-eslint/parser": "^4.0.0",
+    "eslint": "^7.25.0",
+    "eslint-config-airbnb-typescript": "^12.3.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.22.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "jest": "^26.6.3",
+    "nodemon": "^2.0.7",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.5.5",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.4"
+  }
+}
