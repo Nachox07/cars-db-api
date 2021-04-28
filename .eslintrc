@@ -2,5 +2,8 @@
   "parserOptions": {
     "project": "./tsconfig.json"
   },
-  "extends": ["airbnb-typescript/base", "plugin:prettier/recommended"]
+  "extends": ["airbnb-typescript/base", "plugin:prettier/recommended"],
+  "rules": {
+    "no-underscore-dangle": 0
+  }
 }
