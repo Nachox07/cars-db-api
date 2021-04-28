@@ -1,0 +1,18 @@
+version: '3.8'
+services:
+  mongo-db:
+    image: mongo
+    ports:
+      - '27017:27017'
+    container_name: mongo-db
+    volumes:
+      - ./db/:/data/db
+  nodejs-api:
+    depends_on:
+      - mongo-db
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - '80:8080'
+    container_name: cars-db-api
