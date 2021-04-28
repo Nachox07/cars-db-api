@@ -1,33 +1,18 @@
 import express from 'express';
+import createDbConnection from './db/connection';
 import logger from './logger';
+import configureMiddlewares from './middlewares';
+import configureRoutes from './routes';
 
-const init = () => {
+const init = async () => {
   const app = express();
   const port = process.env.PORT || 8080;
-  const router = express.Router();
 
-  app
-    .route('/cars')
-    .get((req, res) => {
-      res.send('get all cars metadata');
-    })
-    .post((req, res) => {
-      res.send('create a new car');
-    });
+  // Initialise DB connection
+  await createDbConnection();
 
-  app
-    .route('/cars/:carId')
-    .get((req, res) => {
-      res.send('get a car by a given cariId');
-    })
-    .patch((req, res) => {
-      res.send('update car property by carId');
-    })
-    .delete((req, res) => {
-      res.send('delete car by carId');
-    });
-
-  app.use(router);
+  configureMiddlewares(app);
+  configureRoutes(app);
 
   app.listen(port, () => {
     logger.info(`cars-db-api listening at http://localhost:${port}`);
