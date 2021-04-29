@@ -1,7 +1,7 @@
 import express from 'express';
 import createDbConnection from './db/connection';
 import logger from './logger';
-import configureMiddlewares from './middlewares';
+import configureMiddlewares, { exceptionHandler } from './middlewares';
 import configureRoutes from './routes';
 
 const init = async () => {
@@ -13,6 +13,8 @@ const init = async () => {
 
   configureMiddlewares(app);
   configureRoutes(app);
+
+  app.use(exceptionHandler);
 
   app.listen(port, () => {
     logger.info(`cars-db-api listening at http://localhost:${port}`);

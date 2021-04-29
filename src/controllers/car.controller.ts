@@ -1,3 +1,4 @@
+import { DatabaseException } from '../exceptions';
 import logger from '../logger';
 import { ICar, Car } from '../models/car.model';
 
@@ -13,7 +14,7 @@ const CarController = {
 
       logger.info({ message: `New car added`, carDoc });
     } catch (err) {
-      logger.error({ message: 'Error while adding a new car', err });
+      throw new DatabaseException('Error while adding a new car', err);
     }
 
     return carDoc;
@@ -24,22 +25,26 @@ const CarController = {
     try {
       result = Boolean(await Car.findByIdAndDelete(carId));
 
-      logger.info(`Car deleted ${carId}`);
+      if (result) {
+        logger.info({ message: `Car deleted ${carId}` });
+      }
     } catch (err) {
-      logger.error({ message: 'Error while deleting car', err });
+      throw new DatabaseException('Error while deleting car', err);
     }
 
     return result;
   },
-  getCar: async (carId: string) => {
+  getCar: async (carId: ICar['_id']) => {
     let carDoc: ICar | null = null;
 
     try {
       carDoc = await Car.findById(carId);
 
-      logger.info(`getting car ${carId}`);
+      if (carDoc) {
+        logger.info({ message: `getting car ${carId}` });
+      }
     } catch (err) {
-      logger.error({ message: 'Error while getting car', err });
+      throw new DatabaseException('Error while getting car', err);
     }
 
     return carDoc;
@@ -61,22 +66,24 @@ const CarController = {
         },
       ]).exec();
 
-      logger.info(`Getting cars collection`);
+      logger.info({ message: 'Getting cars collection' });
     } catch (err) {
-      logger.error({ message: 'Error while getting cars collection', err });
+      throw new DatabaseException('Error while getting cars collection', err);
     }
 
     return carDocs;
   },
-  updateCar: async (carId: string, car: Omit<ICar, ICar['_id']>) => {
-    let result: boolean | null = null;
+  updateCar: async (carId: ICar['_id'], car: Omit<ICar, ICar['_id']>) => {
+    let result: boolean = false;
 
     try {
       result = Boolean(await Car.findByIdAndUpdate(carId, car));
 
-      logger.info(`car updated ${carId}`);
+      if (result) {
+        logger.info({ message: `car updated ${carId}` });
+      }
     } catch (err) {
-      logger.error({ message: 'Error while adding a new car', err });
+      throw new DatabaseException('Error while updating car', err);
     }
 
     return result;
