@@ -11,6 +11,7 @@ export interface ICar extends Document {
 const CarSchema: Schema = new Schema({
   brand: { type: String, required: true },
   carModel: { type: String, required: true },
+  creationDate: { type: Date, required: true },
   color: { type: String, required: true },
   specs: [{ type: String }],
   year: { type: Number, required: true },

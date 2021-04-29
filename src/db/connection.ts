@@ -6,6 +6,7 @@ const createDbConnection = async () => {
 
   try {
     await mongoose.connect('mongodb://localhost:27017/cars-db', {
+      useFindAndModify: false,
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
