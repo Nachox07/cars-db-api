@@ -110,6 +110,19 @@ describe('cars-db-api integration test', () => {
         }),
       );
     });
+
+    it('can not add a car if payload is invalid', async () => {
+      const { body } = await request(app)
+        .post('/cars')
+        .send({
+          brand: 'Mercedes',
+        })
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({ error: 'Malformed request' });
+    });
   });
 
   describe('delete car action', () => {
@@ -136,6 +149,16 @@ describe('cars-db-api integration test', () => {
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });
+    });
+
+    it('can not delete a car if car ID is invalid', async () => {
+      const { body } = await request(app)
+        .delete('/cars/123')
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({ error: 'Malformed request' });
     });
   });
 
@@ -167,6 +190,16 @@ describe('cars-db-api integration test', () => {
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });
+    });
+
+    it('can not get a car if car ID is invalid', async () => {
+      const { body } = await request(app)
+        .get('/cars/123')
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({ error: 'Malformed request' });
     });
   });
 
@@ -254,6 +287,33 @@ describe('cars-db-api integration test', () => {
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });
+    });
+
+    it('can not update a car if car ID is invalid', async () => {
+      const { body } = await request(app)
+        .patch('/cars/123')
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({ error: 'Malformed request' });
+    });
+
+    it('can not update update payload is invalid', async () => {
+      const mockCreationDate = new Date();
+      const carDoc = await new Car({
+        ...mockCar,
+        creationDate: mockCreationDate,
+      }).save();
+
+      const { body } = await request(app)
+        .patch(`/cars/${carDoc._id}`)
+        .send({ specs: {} })
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({ error: 'Malformed request' });
     });
   });
 });

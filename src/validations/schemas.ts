@@ -33,3 +33,8 @@ export const carSchema: ValidateFunction = {
     },
   },
 };
+
+export const updateCarSchema: ValidateFunction = {
+  ...carSchema,
+  required: [],
+};

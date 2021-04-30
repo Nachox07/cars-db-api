@@ -1,5 +1,5 @@
 import validator from '../validator';
-import { carSchema, carIdSchema } from '../schemas';
+import { carSchema, carIdSchema, updateCarSchema } from '../schemas';
 
 describe('schemas', () => {
   describe('carIdSchema', () => {
@@ -55,6 +55,54 @@ describe('schemas', () => {
           carModel: 'Series 4',
           color: 'Dark blue',
           specs: ['M Package'],
+        }),
+      ).toEqual(false);
+    });
+
+    it('return false when specs fields contains duplicates', () => {
+      expect(
+        validate({
+          brand: 'BMW',
+          carModel: 'Series 4',
+          color: 'Dark blue',
+          specs: ['M Package', 'M Package'],
+          year: 2016,
+        }),
+      ).toEqual(false);
+    });
+  });
+
+  describe('updateCarSchema', () => {
+    // @ts-ignore ajv does not take part of the type
+    const validate = validator.ajv.compile(updateCarSchema);
+
+    it('return true when object is valid', () => {
+      expect(
+        validate({
+          brand: 'BMW',
+        }),
+      ).toEqual(true);
+
+      expect(
+        validate({
+          specs: ['M Package'],
+        }),
+      ).toEqual(true);
+    });
+
+    it('return false when object is invalid', () => {
+      expect(
+        validate({
+          brand: 123,
+          specs: ['M Package'],
+        }),
+      ).toEqual(false);
+    });
+
+    it('return false when specs fields contains duplicates', () => {
+      expect(
+        validate({
+          specs: ['M Package', 'M Package'],
         }),
       ).toEqual(false);
     });

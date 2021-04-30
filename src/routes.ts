@@ -1,7 +1,7 @@
 import { Application, Router } from 'express';
 import CarController from './controllers/car.controller';
 import validator from './validations/validator';
-import { carIdSchema, carSchema } from './validations/schemas';
+import { carIdSchema, carSchema, updateCarSchema } from './validations/schemas';
 
 const router = Router();
 
@@ -59,7 +59,7 @@ const configureRoutes = async (app: Application) => {
       },
     )
     .patch(
-      validator.validate({ params: carIdSchema }),
+      validator.validate({ params: carIdSchema, body: updateCarSchema }),
       async (req, res, next) => {
         let result;
         try {
