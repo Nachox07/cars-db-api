@@ -14,7 +14,7 @@ const publicErrors: Record<string, { status: number; message: string }> = {
   },
 };
 
-export const exceptionHandler: ErrorRequestHandler = async (
+export const exceptionHandler: ErrorRequestHandler = (
   err,
   req,
   res,
@@ -28,7 +28,7 @@ export const exceptionHandler: ErrorRequestHandler = async (
   res.status(publicError.status).send(publicError.message);
 };
 
-const configureMiddlewares = async (app: Application) => {
+const configureMiddlewares = (app: Application) => {
   app.use(express.json());
   app.use(
     expressPino({

@@ -14,7 +14,7 @@ const CarController = {
 
       logger.info({ message: `New car added`, carDoc });
     } catch (err) {
-      throw new DatabaseException('Error while adding a new car', err);
+      throw new DatabaseException(`Error while adding a new car`);
     }
 
     return carDoc;
@@ -29,7 +29,7 @@ const CarController = {
         logger.info({ message: `Car deleted ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException('Error while deleting car', err);
+      throw new DatabaseException(`Error while deleting car`);
     }
 
     return result;
@@ -44,7 +44,7 @@ const CarController = {
         logger.info({ message: `getting car ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException('Error while getting car', err);
+      throw new DatabaseException(`Error while getting car`);
     }
 
     return carDoc;
@@ -65,7 +65,7 @@ const CarController = {
 
       logger.info({ message: 'Getting cars collection' });
     } catch (err) {
-      throw new DatabaseException('Error while getting cars collection', err);
+      throw new DatabaseException(`Error while getting cars collection`);
     }
 
     return carDocs;
@@ -80,7 +80,7 @@ const CarController = {
         logger.info({ message: `car updated ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException('Error while updating car', err);
+      throw new DatabaseException(`Error while updating car`);
     }
 
     return result;
