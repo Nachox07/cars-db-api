@@ -12,7 +12,6 @@ const configureRoutes = async (app: Application) => {
       try {
         cars = await CarController.getCars();
       } catch (err) {
-        console.log(err);
         return next(err);
       }
 

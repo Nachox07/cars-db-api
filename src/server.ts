@@ -2,8 +2,9 @@ import { Server } from 'http';
 import express from 'express';
 import { createDbConnection, closeDbConnection } from './db/connection';
 import logger from './logger';
-import configureMiddlewares, { exceptionHandler } from './middlewares';
+import configureMiddlewares from './middlewares/configureMiddlewares';
 import configureRoutes from './routes';
+import { exceptionHandler } from './middlewares/exceptionHandler';
 
 let serverInstance: Server;
 
