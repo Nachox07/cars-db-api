@@ -63,6 +63,7 @@
     "@types/mongoose": "^5.10.5",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
+    "express-json-validator-middleware": "^2.1.1",
     "express-pino-logger": "^6.0.0",
     "mongoose": "^5.12.6",
     "pino": "^6.11.3"

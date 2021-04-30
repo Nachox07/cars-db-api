@@ -19,6 +19,11 @@ const publicErrors: Record<string, { status: number; message: string }> = {
     status: 401,
     message: 'Authorization information needs to be provided',
   },
+  // ValidationError express-json-validator-middleware
+  JsonSchemaValidationError: {
+    status: 400,
+    message: 'Malformed request',
+  },
   default: {
     status: 500,
     message: 'System error',

@@ -623,7 +623,7 @@
   dependencies:
     "@types/pino-http" "*"
 
-"@types/express-serve-static-core@^4.17.18":
+"@types/express-serve-static-core@^4.17.18", "@types/express-serve-static-core@^4.17.2":
   version "4.17.19"
   resolved "https://registry.yarnpkg.com/@types/express-serve-static-core/-/express-serve-static-core-4.17.19.tgz#00acfc1632e729acac4f1530e9e16f6dd1508a1d"
   integrity sha512-DJOSHzX7pCiSElWaGR8kCprwibCB/3yW6vcT8VG3P0SJjnv19gnWG/AZMfM60Xj/YJIp/YCaDHyvzsFVeniARA==
@@ -632,7 +632,7 @@
     "@types/qs" "*"
     "@types/range-parser" "*"
 
-"@types/express@^4.17.11":
+"@types/express@^4.17.11", "@types/express@^4.17.3":
   version "4.17.11"
   resolved "https://registry.yarnpkg.com/@types/express/-/express-4.17.11.tgz#debe3caa6f8e5fcda96b47bd54e2f40c4ee59545"
   integrity sha512-no+R6rW60JEc59977wIxreQVsIEOAYwgCqldrA/vkpCnbD7MqTefO97lmoBe4WE0F156bC4uLSP1XHDOySnChg==
@@ -676,7 +676,7 @@
     jest-diff "^26.0.0"
     pretty-format "^26.0.0"
 
-"@types/json-schema@^7.0.3":
+"@types/json-schema@^7.0.3", "@types/json-schema@^7.0.4":
   version "7.0.7"
   resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.7.tgz#98a993516c859eb0d5c4c8f098317a9ea68db9ad"
   integrity sha512-cxWFQVseBm6O9Gbw1IWb8r6OS4OhSt3hPZLkFApLjM8TEXROBuQGLAH2i2gZpcXdLBIrpXuTDhH7Vbm1iXmNGA==
@@ -946,7 +946,12 @@ aggregate-error@^3.0.0:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
 
-ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4:
+ajv-bsontype@^1.0.7:
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/ajv-bsontype/-/ajv-bsontype-1.0.7.tgz#24f13cd50c117491ce8cc2f6251dfa13b2953ca0"
+  integrity sha512-9dnPihZV22Eqwn55V5VstmE641GDcFwG18BrBhsXTNrf52ASON8sAjomWd/KosAh4w+N7mKU8LB10TBp/cMQVQ==
+
+ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.6.2:
   version "6.12.6"
   resolved "https://registry.yarnpkg.com/ajv/-/ajv-6.12.6.tgz#baf5a62e802b07d977034586f8c3baf5adf26df4"
   integrity sha512-j3fVLgvTo527anyYyJOGTYJbG+vnnQYvE0m5mmkc1TK+nxAppkCLMIL0aZ4dblVCNoGShhm+kzE4ZUykBoMg4g==
@@ -2341,6 +2346,16 @@ expect@^26.6.2:
     jest-matcher-utils "^26.6.2"
     jest-message-util "^26.6.2"
     jest-regex-util "^26.0.0"
+
+express-json-validator-middleware@^2.1.1:
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/express-json-validator-middleware/-/express-json-validator-middleware-2.1.1.tgz#4e59c77794b421f7ec022a932d971f4501152a75"
+  integrity sha512-l9yB5LqRheCdMbWByxh/uIIdGKGaPVbzXv+zQ7hC1KO9NprUsmrrEucXc88vn0BTK/Jy9jR+xrPfv3WSdTY5Wg==
+  dependencies:
+    "@types/express" "^4.17.3"
+    "@types/express-serve-static-core" "^4.17.2"
+    "@types/json-schema" "^7.0.4"
+    ajv "^6.6.2"
 
 express-pino-logger@^6.0.0:
   version "6.0.0"
