@@ -33,7 +33,7 @@ describe('authorizationHandler', () => {
     );
 
     expect(mockNext).toHaveBeenCalledWith(
-      new ForbiddenException('Wrong Authorization Key'),
+      new ForbiddenException('Wrong authorization key'),
     );
   });
 

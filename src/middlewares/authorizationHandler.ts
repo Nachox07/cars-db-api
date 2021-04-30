@@ -11,7 +11,7 @@ const authorizationHandler: Handler = (req, res, next) => {
   }
 
   if (req.headers['x-api-key'] !== process.env.API_KEY) {
-    return next(new ForbiddenException('Wrong Authorization Key'));
+    return next(new ForbiddenException('Wrong authorization key'));
   }
 
   return next();

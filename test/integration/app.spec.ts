@@ -4,6 +4,8 @@ import { MongoMemoryServer } from 'mongodb-memory-server';
 import { init, close } from '../../src/server';
 import { Car, ICar } from '../../src/models/car.model';
 
+process.env.API_KEY = '123456';
+
 let app: Server | null;
 let mongod: MongoMemoryServer;
 
@@ -39,6 +41,39 @@ describe('cars-db-api integration test', () => {
     await mongod.stop();
   }, 5000);
 
+  describe('authorization', () => {
+    it('return unauthorized when x-api-key is not present', async () => {
+      const { body } = await request(app)
+        .get(`/cars`)
+        .set('Accept', 'application/json')
+        .expect(401);
+
+      expect(body).toEqual({
+        error: 'Authorization information needs to be provided',
+      });
+    });
+
+    it('return forbidden when x-api-key is not valid', async () => {
+      const { body } = await request(app)
+        .get(`/cars`)
+        .set('Accept', 'application/json')
+        .set('x-api-key', 'invalid-api-key')
+        .expect(403);
+
+      expect(body).toEqual({ error: 'Wrong authorization key' });
+    });
+
+    it('return unauthorized when x-api-key is not present', async () => {
+      const { body } = await request(app)
+        .get(`/cars`)
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(200);
+
+      expect(body).toEqual([]);
+    });
+  });
+
   describe('add car action', () => {
     it('add a car to db', async () => {
       let carId = '';
@@ -48,6 +83,7 @@ describe('cars-db-api integration test', () => {
         .post('/cars')
         .send(mockCar)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(201);
 
       expect(addBody).toEqual(
@@ -63,6 +99,7 @@ describe('cars-db-api integration test', () => {
       const { body: getBody } = await request(app)
         .get(`/cars/${carId}`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(200);
 
       expect(getBody).toEqual(
@@ -87,6 +124,7 @@ describe('cars-db-api integration test', () => {
       await request(app)
         .delete(`/cars/${carDoc._id}`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(204);
     });
 
@@ -94,6 +132,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .delete(`/cars/${nonExistingCarId}`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });
@@ -112,6 +151,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars/${carDoc._id}`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(200);
 
       expect(body).toEqual(expect.objectContaining(mockCar));
@@ -123,6 +163,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars/${nonExistingCarId}`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });
@@ -134,6 +175,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(200);
 
       expect(body).toEqual([]);
@@ -154,6 +196,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars`)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(200);
 
       expect(body[0]).toEqual({
@@ -188,6 +231,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${carDoc._id}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(204);
 
       // retrieve the car with properties updated
@@ -195,6 +239,7 @@ describe('cars-db-api integration test', () => {
         .get(`/cars/${carDoc._id}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(200);
 
       expect(body).toEqual(expect.objectContaining(mockUpdatePayload));
@@ -205,6 +250,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${nonExistingCarId}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
       expect(body).toEqual({ message: 'Car was not found' });

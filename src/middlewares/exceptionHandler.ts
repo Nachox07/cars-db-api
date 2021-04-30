@@ -13,7 +13,7 @@ const publicErrors: Record<string, { status: number; message: string }> = {
   },
   [ForbiddenException.name]: {
     status: 403,
-    message: 'Wrong Authorization Key',
+    message: 'Wrong authorization key',
   },
   [UnauthorizedException.name]: {
     status: 401,

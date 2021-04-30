@@ -54,7 +54,7 @@ describe('exceptionHandler', () => {
     );
     expect(mockStatus).toHaveBeenCalledWith(403);
     expect(mockSend).toHaveBeenCalledWith({
-      error: 'Wrong Authorization Key',
+      error: 'Wrong authorization key',
     });
   });
 
