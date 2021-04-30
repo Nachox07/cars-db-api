@@ -4,6 +4,7 @@
   },
   "extends": ["airbnb-typescript/base", "plugin:prettier/recommended"],
   "rules": {
+    "max-classes-per-file": 0,
     "no-underscore-dangle": 0
   }
 }

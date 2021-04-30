@@ -8,8 +8,8 @@
     "clean:build": "rm -rf dist",
     "clean:installation": "rm -rf node_modules ",
     "clean": "run-p clean:*",
-    "start": "yarn build && NODE_ENV=development node dist/index.js",
-    "start:dev": "TS_NODE_FILES=true NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'node --inspect=0.0.0.0:9230 -r ts-node/register' src/index.ts | pino-pretty",
+    "start": "yarn build && NODE_ENV=development node -r dotenv/config dist/index.js",
+    "start:dev": "TS_NODE_FILES=true NODE_ENV=development nodemon --watch 'src/**/*.ts' --exec 'node --inspect=0.0.0.0:9230 -r ts-node/register -r dotenv/config' src/index.ts | pino-pretty",
     "test": "run-s test:*",
     "test:types": "tsc -p ./tsconfig.json --noEmit",
     "test:lint": "eslint './src/**/*.ts' --fix",
@@ -56,6 +56,7 @@
   },
   "dependencies": {
     "@types/mongoose": "^5.10.5",
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-pino-logger": "^6.0.0",
     "mongoose": "^5.12.6",
