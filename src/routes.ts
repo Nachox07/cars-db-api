@@ -12,6 +12,7 @@ const configureRoutes = async (app: Application) => {
       try {
         cars = await CarController.getCars();
       } catch (err) {
+        console.log(err);
         return next(err);
       }
 
@@ -28,7 +29,7 @@ const configureRoutes = async (app: Application) => {
 
       if (carDoc) {
         res.location(`http://localhost:8080/cars/${carDoc?._id}`);
-        res.status(201).json(carDoc);
+        return res.status(201).json(carDoc);
       }
 
       return res
@@ -62,7 +63,7 @@ const configureRoutes = async (app: Application) => {
       }
 
       if (result) {
-        res.sendStatus(204);
+        return res.sendStatus(204);
       }
 
       return res.status(404).json({ message: 'Car was not found' });

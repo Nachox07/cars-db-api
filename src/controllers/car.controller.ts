@@ -56,12 +56,9 @@ const CarController = {
       carDocs = await Car.aggregate([
         {
           $project: {
+            creationDate: 1,
             _id: 1,
-            brand: 0,
-            carModel: 0,
-            color: 0,
-            specs: 0,
-            year: 0,
+            __v: 1,
           },
         },
       ]).exec();

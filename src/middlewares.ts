@@ -1,4 +1,5 @@
 import express, { Application, ErrorRequestHandler } from 'express';
+import expressPino from 'express-pino-logger';
 import { DatabaseException } from './exceptions';
 import logger from './logger';
 
@@ -29,6 +30,11 @@ export const exceptionHandler: ErrorRequestHandler = async (
 
 const configureMiddlewares = async (app: Application) => {
   app.use(express.json());
+  app.use(
+    expressPino({
+      logger,
+    }),
+  );
 };
 
 export default configureMiddlewares;

@@ -1,10 +1,13 @@
+import { Server } from 'http';
 import express from 'express';
-import createDbConnection from './db/connection';
+import { createDbConnection, closeDbConnection } from './db/connection';
 import logger from './logger';
 import configureMiddlewares, { exceptionHandler } from './middlewares';
 import configureRoutes from './routes';
 
-const init = async () => {
+let serverInstance: Server;
+
+const start = async () => {
   const app = express();
   const port = process.env.PORT || 8080;
 
@@ -16,9 +19,39 @@ const init = async () => {
 
   app.use(exceptionHandler);
 
-  app.listen(port, () => {
+  serverInstance = app.listen(port, () => {
     logger.info(`cars-db-api listening at http://localhost:${port}`);
   });
+
+  return serverInstance;
 };
 
-export default init;
+export const init = () => {
+  try {
+    logger.info('Starting cars-db-api');
+    return start();
+  } catch (error) {
+    logger.error(
+      'Error while starting cars-db-api:',
+      error.message,
+      error.stack,
+    );
+    return null;
+  }
+};
+
+export const close = async () => {
+  try {
+    await closeDbConnection();
+    serverInstance.close();
+    logger.info({ message: 'Server closed' });
+  } catch (err) {
+    logger.error({ message: 'No serverInstance running or DB connection' });
+  }
+};
+
+process.on('SIGTERM', () => {
+  logger.info({ message: 'SIGTERM signal received' });
+
+  close();
+});
