@@ -1,15 +1,18 @@
 import mongoose from 'mongoose';
 import logger from '../logger';
 
-const createDbConnection = async () => {
+export const createDbConnection = async () => {
   logger.info('Initialising DB connection');
 
   try {
-    await mongoose.connect('mongodb://localhost:27017/cars-db', {
-      useFindAndModify: false,
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    });
+    await mongoose.connect(
+      process.env.DATABASE_URL || `mongodb://localhost:27017/cars-db`,
+      {
+        useFindAndModify: false,
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+      },
+    );
 
     logger.info('DB connection initialised');
   } catch (err) {
@@ -17,4 +20,6 @@ const createDbConnection = async () => {
   }
 };
 
-export default createDbConnection;
+export const closeDbConnection = async () => {
+  await mongoose.disconnect();
+};
