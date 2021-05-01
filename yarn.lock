@@ -649,6 +649,13 @@
   dependencies:
     "@types/node" "*"
 
+"@types/helmet@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/helmet/-/helmet-4.0.0.tgz#af7af46de26abe368b85360769ae9938bfb2318a"
+  integrity sha512-ONIn/nSNQA57yRge3oaMQESef/6QhoeX7llWeDli0UZIfz8TQMkfNPTXA8VnnyeA1WUjG2pGqdjEIueYonMdfQ==
+  dependencies:
+    helmet "*"
+
 "@types/istanbul-lib-coverage@*", "@types/istanbul-lib-coverage@^2.0.0", "@types/istanbul-lib-coverage@^2.0.1":
   version "2.0.3"
   resolved "https://registry.yarnpkg.com/@types/istanbul-lib-coverage/-/istanbul-lib-coverage-2.0.3.tgz#4ba8ddb720221f432e443bd5f9117fd22cfd4762"
@@ -945,11 +952,6 @@ aggregate-error@^3.0.0:
   dependencies:
     clean-stack "^2.0.0"
     indent-string "^4.0.0"
-
-ajv-bsontype@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/ajv-bsontype/-/ajv-bsontype-1.0.7.tgz#24f13cd50c117491ce8cc2f6251dfa13b2953ca0"
-  integrity sha512-9dnPihZV22Eqwn55V5VstmE641GDcFwG18BrBhsXTNrf52ASON8sAjomWd/KosAh4w+N7mKU8LB10TBp/cMQVQ==
 
 ajv@^6.10.0, ajv@^6.12.3, ajv@^6.12.4, ajv@^6.6.2:
   version "6.12.6"
@@ -2908,6 +2910,11 @@ hasha@^5.0.0:
   dependencies:
     is-stream "^2.0.0"
     type-fest "^0.8.0"
+
+helmet@*, helmet@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/helmet/-/helmet-4.5.0.tgz#da5a75d30cbd9f60628e9463a85dc7725806c2ea"
+  integrity sha512-GfxdTaKarneWOpxmiVb/1YsY+fIwDOxVUGrvNEM1MC8W6Z2PREfkXiWF4XHQdvkyXwUTHuY4DRwB0uH/Q6BVyQ==
 
 hosted-git-info@^2.1.4:
   version "2.8.9"
