@@ -99,6 +99,10 @@ describe('schemas', () => {
       ).toEqual(false);
     });
 
+    it('return false when object is empty', () => {
+      expect(validate({})).toEqual(false);
+    });
+
     it('return false when specs fields contains duplicates', () => {
       expect(
         validate({

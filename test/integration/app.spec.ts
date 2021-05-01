@@ -353,13 +353,67 @@ describe('cars-db-api integration test', () => {
       expect(body).toEqual({
         params: [
           {
-            dataPath: '.carId',
             keyword: 'objectId',
-            message: 'should pass "objectId" keyword validation',
+            dataPath: '.carId',
+            schemaPath: '#/properties/carId/objectId',
             params: {
               keyword: 'objectId',
             },
-            schemaPath: '#/properties/carId/objectId',
+            message: 'should pass "objectId" keyword validation',
+          },
+        ],
+        body: [
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/0/required',
+            params: {
+              missingProperty: 'brand',
+            },
+            message: "should have required property 'brand'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/1/required',
+            params: {
+              missingProperty: 'carModel',
+            },
+            message: "should have required property 'carModel'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/2/required',
+            params: {
+              missingProperty: 'color',
+            },
+            message: "should have required property 'color'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/3/required',
+            params: {
+              missingProperty: 'specs',
+            },
+            message: "should have required property 'specs'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/4/required',
+            params: {
+              missingProperty: 'year',
+            },
+            message: "should have required property 'year'",
+          },
+          {
+            keyword: 'anyOf',
+            dataPath: '',
+            schemaPath: '#/anyOf',
+            params: {},
+            message: 'should match some schema in anyOf',
           },
         ],
       });
@@ -389,6 +443,78 @@ describe('cars-db-api integration test', () => {
               type: 'array',
             },
             schemaPath: '#/properties/specs/type',
+          },
+        ],
+      });
+    });
+
+    it('can not update update payload is empty', async () => {
+      const mockCreationDate = new Date();
+      const carDoc = await new Car({
+        ...mockCar,
+        creationDate: mockCreationDate,
+      }).save();
+
+      const { body } = await request(app)
+        .patch(`/cars/${carDoc._id}`)
+        .send({})
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({
+        body: [
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/0/required',
+            params: {
+              missingProperty: 'brand',
+            },
+            message: "should have required property 'brand'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/1/required',
+            params: {
+              missingProperty: 'carModel',
+            },
+            message: "should have required property 'carModel'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/2/required',
+            params: {
+              missingProperty: 'color',
+            },
+            message: "should have required property 'color'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/3/required',
+            params: {
+              missingProperty: 'specs',
+            },
+            message: "should have required property 'specs'",
+          },
+          {
+            keyword: 'required',
+            dataPath: '',
+            schemaPath: '#/anyOf/4/required',
+            params: {
+              missingProperty: 'year',
+            },
+            message: "should have required property 'year'",
+          },
+          {
+            keyword: 'anyOf',
+            dataPath: '',
+            schemaPath: '#/anyOf',
+            params: {},
+            message: 'should match some schema in anyOf',
           },
         ],
       });

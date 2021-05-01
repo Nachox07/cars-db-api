@@ -34,7 +34,25 @@ export const carSchema: ValidateFunction = {
   },
 };
 
+// At least one property must be passed
 export const updateCarSchema: ValidateFunction = {
   ...carSchema,
   required: [],
+  anyOf: [
+    {
+      required: ['brand'],
+    },
+    {
+      required: ['carModel'],
+    },
+    {
+      required: ['color'],
+    },
+    {
+      required: ['specs'],
+    },
+    {
+      required: ['year'],
+    },
+  ],
 };
