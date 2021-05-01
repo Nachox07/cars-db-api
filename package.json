@@ -62,12 +62,14 @@
   },
   "dependencies": {
     "@types/mongoose": "^5.10.5",
+    "@types/swagger-ui-express": "^4.1.2",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-json-validator-middleware": "^2.1.1",
     "express-pino-logger": "^6.0.0",
     "helmet": "^4.5.0",
     "mongoose": "^5.12.6",
-    "pino": "^6.11.3"
+    "pino": "^6.11.3",
+    "swagger-ui-express": "^4.1.6"
   }
 }

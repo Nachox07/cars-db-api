@@ -43,7 +43,7 @@ export const exceptionHandler: ErrorRequestHandler = (
 ) => {
   // AJV validator error has a custom data structure
   if (err instanceof ValidationError) {
-    logger.error({ message: err.message, stack: err.stack });
+    logger.error({ message: err.validationErrors, stack: err.stack });
 
     return res.status(400).send(err.validationErrors);
   }

@@ -1,0 +1,546 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "cars-db-api",
+    "version": "1.0.0",
+    "description": "cars-db-api data models and endpoints"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080",
+      "description": "Localhost"
+    }
+  ],
+  "paths": {
+    "/cars": {
+      "post": {
+        "summary": "Add a new car to the cars collection",
+        "description": "Add a new car to the cars collection by sending an object following the `ICar` interface. It returns the added car",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyHeader"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "It must contain all the `ICar` properties for adding a new car to the collection",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/CarData"
+                  },
+                  {
+                    "type": "object",
+                    "required": ["brand", "carModel", "color", "year"]
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "returned when the car was added successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarDatabaseEntry"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key hasn't permissions to access the resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error related to a car creation on the DB",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get cars collection metadata",
+        "description": "Get the metadata from the cars collection listing all the data inside the cars collection partially",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyHeader"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cars were retrieved successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/CarMetadata"
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Body is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key hasn't permissions to access the resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error related to the DB query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cars/{carId}": {
+      "delete": {
+        "summary": "Delete a car from the cars collection",
+        "description": "Delete a car from the cars collection by the given car ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CarId"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyHeader"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Car was deleted successfully"
+          },
+          "400": {
+            "description": "Car ID is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key hasn't permissions to access the resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error related to the DB delete query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "get": {
+        "summary": "Get a car from the cars collection",
+        "description": "Get a car from the cars collection by the given car ID",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CarId"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyHeader"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Car was retreived successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CarDatabaseEntry"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Car ID is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has no permissions to access the resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error related to the DB query",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch": {
+        "summary": "Update a car from the cars collection",
+        "description": "Update a car from the cars collection by the given car ID and body containing one or more `ICar` properties",
+        "parameters": [
+          {
+            "in": "path",
+            "name": "carId",
+            "required": true,
+            "schema": {
+              "$ref": "#/components/schemas/CarId"
+            }
+          },
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "schema": {
+              "$ref": "#/components/schemas/ApiKeyHeader"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "One or more car properties to update",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CarUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "204": {
+            "description": "Car was updated successfully"
+          },
+          "400": {
+            "description": "Car ID and/or body are/is not valid",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ValidationError"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "API key is not provided",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UnauthorizedError"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "API key has no permissions to access the resource",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ForbiddenError"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Car was not found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NotFoundError"
+                }
+              }
+            }
+          },
+          "409": {
+            "description": "Error to car deletion",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConflictError"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "CarData": {
+        "type": "object",
+        "properties": {
+          "brand": {
+            "type": "string",
+            "description": "Car brand",
+            "example": "BMW"
+          },
+          "carModel": {
+            "type": "string",
+            "description": "Car model",
+            "example": "Series 3"
+          },
+          "color": {
+            "type": "string",
+            "description": "Car color",
+            "example": "Dark Blue"
+          },
+          "specs": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Car color",
+            "example": ["M Package", "Tinted Windows"]
+          },
+          "year": {
+            "type": "number",
+            "description": "Car release year",
+            "example": 2018
+          }
+        }
+      },
+      "CarUpdate": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CarData"
+          },
+          {
+            "type": "object",
+            "minProperties": 1
+          }
+        ]
+      },
+      "CarMetadata": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "Object ID of the new created car entry",
+            "example": "608b9d7a695ef436ccda19a5"
+          },
+          "creationDate": {
+            "type": "string",
+            "description": "Date of the entry inserts operation in the DB for tracking purposes",
+            "example": "2021-01-01T12:45:00.000Z"
+          },
+          "__v": {
+            "type": "number",
+            "description": "Version of the Document added by Mongoose",
+            "example": "0"
+          }
+        }
+      },
+      "CarDatabaseEntry": {
+        "allOf": [
+          {
+            "$ref": "#/components/schemas/CarData"
+          },
+          {
+            "$ref": "#/components/schemas/CarMetadata"
+          }
+        ]
+      },
+      "ApiKeyHeader": {
+        "type": "string",
+        "description": "API key for accessing the endpoint",
+        "example": 123456
+      },
+      "CarId": {
+        "type": "string",
+        "description": "Object ID for identifying a car in the cars collection",
+        "example": "608b9d7a695ef436ccda19a5"
+      },
+      "ConflictError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Given error to temporary conflicts",
+            "example": "Error while processing the request"
+          }
+        }
+      },
+      "ForbiddenError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Given error when API key is not valid",
+            "example": "Wrong authorization key"
+          }
+        }
+      },
+      "NotFoundError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Given error when resource is not found",
+            "example": "Car was not found"
+          }
+        }
+      },
+      "UnauthorizedError": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string",
+            "description": "Given error when API key is not provided",
+            "example": "Authorization information needs to be provided"
+          }
+        }
+      },
+      "ValidationError": {
+        "type": "object",
+        "properties": {
+          "body": {
+            "type": "object",
+            "description": "AJV given error when params are invalid",
+            "example": " { \"body\": [ { \"keyword\": \"required\", \"dataPath\": \"\", \"schemaPath\": \"#/required\", \"params\": { \"missingProperty\": \"year\" }, \"message\": \"should have required property year\" } ] }"
+          }
+        }
+      }
+    }
+  }
+}

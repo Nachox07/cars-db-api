@@ -1,11 +1,15 @@
 import express, { Application } from 'express';
 import helmet from 'helmet';
 import expressPino from 'express-pino-logger';
+import swaggerUi from 'swagger-ui-express';
+import swaggerDocument from '../../swagger.json';
 import logger from '../logger';
 import authorizationHandler from './authorizationHandler';
 
 const configureMiddlewares = (app: Application) => {
-  logger.info('configuring middlewares');
+  if (process.env.NODE_ENV !== 'production') {
+    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+  }
 
   app.use(helmet());
   app.use(express.json());
