@@ -1,4 +1,5 @@
 import { ErrorRequestHandler } from 'express';
+import { ValidationError } from 'express-json-validator-middleware';
 import {
   DatabaseException,
   UnauthorizedException,
@@ -19,11 +20,6 @@ const publicErrors: Record<string, { status: number; message: string }> = {
     status: 401,
     message: 'Authorization information needs to be provided',
   },
-  // ValidationError express-json-validator-middleware
-  JsonSchemaValidationError: {
-    status: 400,
-    message: 'Malformed request',
-  },
   default: {
     status: 500,
     message: 'System error',
@@ -37,11 +33,20 @@ export const exceptionHandler: ErrorRequestHandler = (
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _,
 ) => {
+  // AJV validator error has a custom data structure
+  if (err instanceof ValidationError) {
+    logger.error({ message: err.message, stack: err.stack });
+
+    return res.status(400).send(err.validationErrors);
+  }
+
   logger.error({ message: err.message, stack: err.stack });
+
+  logger.info(err.validationErrors);
 
   const publicError = publicErrors[err.name] || publicErrors.default;
 
-  res.status(publicError.status).send({ error: publicError.message });
+  return res.status(publicError.status).send({ error: publicError.message });
 };
 
 export default exceptionHandler;

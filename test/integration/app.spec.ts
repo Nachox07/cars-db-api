@@ -121,7 +121,37 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(400);
 
-      expect(body).toEqual({ error: 'Malformed request' });
+      expect(body).toEqual({
+        body: [
+          {
+            dataPath: '',
+            keyword: 'required',
+            message: "should have required property 'carModel'",
+            params: {
+              missingProperty: 'carModel',
+            },
+            schemaPath: '#/required',
+          },
+          {
+            dataPath: '',
+            keyword: 'required',
+            message: "should have required property 'color'",
+            params: {
+              missingProperty: 'color',
+            },
+            schemaPath: '#/required',
+          },
+          {
+            dataPath: '',
+            keyword: 'required',
+            message: "should have required property 'year'",
+            params: {
+              missingProperty: 'year',
+            },
+            schemaPath: '#/required',
+          },
+        ],
+      });
     });
   });
 
@@ -158,7 +188,19 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(400);
 
-      expect(body).toEqual({ error: 'Malformed request' });
+      expect(body).toEqual({
+        params: [
+          {
+            dataPath: '.carId',
+            keyword: 'objectId',
+            message: 'should pass "objectId" keyword validation',
+            params: {
+              keyword: 'objectId',
+            },
+            schemaPath: '#/properties/carId/objectId',
+          },
+        ],
+      });
     });
   });
 
@@ -199,7 +241,19 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(400);
 
-      expect(body).toEqual({ error: 'Malformed request' });
+      expect(body).toEqual({
+        params: [
+          {
+            dataPath: '.carId',
+            keyword: 'objectId',
+            message: 'should pass "objectId" keyword validation',
+            params: {
+              keyword: 'objectId',
+            },
+            schemaPath: '#/properties/carId/objectId',
+          },
+        ],
+      });
     });
   });
 
@@ -296,7 +350,19 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(400);
 
-      expect(body).toEqual({ error: 'Malformed request' });
+      expect(body).toEqual({
+        params: [
+          {
+            dataPath: '.carId',
+            keyword: 'objectId',
+            message: 'should pass "objectId" keyword validation',
+            params: {
+              keyword: 'objectId',
+            },
+            schemaPath: '#/properties/carId/objectId',
+          },
+        ],
+      });
     });
 
     it('can not update update payload is invalid', async () => {
@@ -313,7 +379,19 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(400);
 
-      expect(body).toEqual({ error: 'Malformed request' });
+      expect(body).toEqual({
+        body: [
+          {
+            dataPath: '.specs',
+            keyword: 'type',
+            message: 'should be array',
+            params: {
+              type: 'array',
+            },
+            schemaPath: '#/properties/specs/type',
+          },
+        ],
+      });
     });
   });
 });
