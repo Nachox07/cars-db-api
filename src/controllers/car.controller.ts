@@ -6,6 +6,10 @@ const CarController = {
   addCar: async (car: ICar) => {
     let carDoc: ICar | null = null;
 
+    // Check specs has no duplicates
+    if (car.specs && new Set(car.specs).size !== car.specs.length)
+      return carDoc;
+
     try {
       carDoc = await new Car({
         ...car,

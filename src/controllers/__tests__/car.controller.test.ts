@@ -56,6 +56,15 @@ describe('CarController', () => {
       });
     });
 
+    it('return null if specs has duplicates', async () => {
+      expect(
+        await CarController.addCar({
+          ...mockCar,
+          specs: ['M Package', 'M Package'],
+        } as ICar),
+      ).toEqual(null);
+    });
+
     it('throw controlled exception if something goes wrong', async () => {
       mockCarSave.mockImplementation(() =>
         Promise.reject(new Error('Unexpected error')),
