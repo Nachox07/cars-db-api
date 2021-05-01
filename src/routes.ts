@@ -2,6 +2,7 @@ import { Application, Router } from 'express';
 import CarController from './controllers/car.controller';
 import validator from './validations/validator';
 import { carIdSchema, carSchema, updateCarSchema } from './validations/schemas';
+import { ConflictError, NotFoundError } from './exceptions';
 
 const router = Router();
 
@@ -33,9 +34,9 @@ const configureRoutes = async (app: Application) => {
         return res.status(201).json(carDoc);
       }
 
-      return res
-        .status(409)
-        .json({ message: 'There was an error processing your request' });
+      return next(
+        new ConflictError('There was an error processing your request'),
+      );
     });
 
   app
@@ -55,7 +56,7 @@ const configureRoutes = async (app: Application) => {
           return res.status(200).json(result);
         }
 
-        return res.status(404).json({ message: 'Car was not found' });
+        return next(new NotFoundError('Car was not found'));
       },
     )
     .patch(
@@ -72,7 +73,7 @@ const configureRoutes = async (app: Application) => {
           return res.sendStatus(204);
         }
 
-        return res.status(404).json({ message: 'Car was not found' });
+        return next(new NotFoundError('Car was not found'));
       },
     )
     .delete(
@@ -89,7 +90,7 @@ const configureRoutes = async (app: Application) => {
           return res.sendStatus(204);
         }
 
-        return res.status(404).json({ message: 'Car was not found' });
+        return next(new NotFoundError('Car was not found'));
       },
     );
 

@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { ForbiddenException, UnauthorizedException } from '../../exceptions';
+import { ForbiddenError, UnauthorizedError } from '../../exceptions';
 import authorizationHandler from '../authorizationHandler';
 
 const mockNext = jest.fn();
@@ -11,17 +11,15 @@ describe('authorizationHandler', () => {
     jest.clearAllMocks();
   });
 
-  it('throw UnauthorizedException when the header is not present', () => {
+  it('throw UnauthorizedError when the header is not present', () => {
     authorizationHandler({ headers: {} } as Request, {} as Response, mockNext);
 
     expect(mockNext).toHaveBeenCalledWith(
-      new UnauthorizedException(
-        'Authorization information needs to be provided',
-      ),
+      new UnauthorizedError('Authorization information needs to be provided'),
     );
   });
 
-  it('throw ForbiddenException when the header is present, but API key is not valid', () => {
+  it('throw Forbidden when the header is present, but API key is not valid', () => {
     authorizationHandler(
       {
         headers: {
@@ -33,7 +31,7 @@ describe('authorizationHandler', () => {
     );
 
     expect(mockNext).toHaveBeenCalledWith(
-      new ForbiddenException('Wrong authorization key'),
+      new ForbiddenError('Wrong authorization key'),
     );
   });
 

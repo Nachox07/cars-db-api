@@ -178,7 +178,7 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
-      expect(body).toEqual({ message: 'Car was not found' });
+      expect(body).toEqual({ error: 'Car was not found' });
     });
 
     it('can not delete a car if car ID is invalid', async () => {
@@ -231,7 +231,7 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
-      expect(body).toEqual({ message: 'Car was not found' });
+      expect(body).toEqual({ error: 'Car was not found' });
     });
 
     it('can not get a car if car ID is invalid', async () => {
@@ -340,7 +340,7 @@ describe('cars-db-api integration test', () => {
         .set('x-api-key', process.env.API_KEY as string)
         .expect(404);
 
-      expect(body).toEqual({ message: 'Car was not found' });
+      expect(body).toEqual({ error: 'Car was not found' });
     });
 
     it('can not update a car if car ID is invalid', async () => {

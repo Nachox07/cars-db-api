@@ -1,8 +1,9 @@
 import { Request, Response } from 'express';
 import {
-  DatabaseException,
-  ForbiddenException,
-  UnauthorizedException,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
 } from '../../exceptions';
 import logger from '../../logger';
 import { exceptionHandler } from '../exceptionHandler';
@@ -20,9 +21,9 @@ describe('exceptionHandler', () => {
     jest.clearAllMocks();
   });
 
-  it('return the correct error for the DatabaseException exception', () => {
+  it('return the correct error for the Conflict exception', () => {
     exceptionHandler(
-      new DatabaseException('DB related error'),
+      new ConflictError('DB related error'),
       {} as Request,
       (mockRes as unknown) as Response,
       () => {},
@@ -33,15 +34,15 @@ describe('exceptionHandler', () => {
         message: 'DB related error',
       }),
     );
-    expect(mockStatus).toHaveBeenCalledWith(500);
+    expect(mockStatus).toHaveBeenCalledWith(409);
     expect(mockSend).toHaveBeenCalledWith({
       error: 'Error while processing the request',
     });
   });
 
-  it('return the correct error for the ForbiddenException exception', () => {
+  it('return the correct error for the Forbidden exception', () => {
     exceptionHandler(
-      new ForbiddenException('not enough permissions'),
+      new ForbiddenError('not enough permissions'),
       {} as Request,
       (mockRes as unknown) as Response,
       () => {},
@@ -58,9 +59,28 @@ describe('exceptionHandler', () => {
     });
   });
 
-  it('return the correct error for the UnauthorizedException exception', () => {
+  it('return the correct error for the NotFound exception', () => {
     exceptionHandler(
-      new UnauthorizedException('user is unauthorized'),
+      new NotFoundError('custom not found error message'),
+      {} as Request,
+      (mockRes as unknown) as Response,
+      () => {},
+    );
+
+    expect(logger.error).toHaveBeenCalledWith(
+      expect.objectContaining({
+        message: 'custom not found error message',
+      }),
+    );
+    expect(mockStatus).toHaveBeenCalledWith(404);
+    expect(mockSend).toHaveBeenCalledWith({
+      error: 'custom not found error message',
+    });
+  });
+
+  it('return the correct error for the UnauthorizedError exception', () => {
+    exceptionHandler(
+      new UnauthorizedError('user is unauthorized'),
       {} as Request,
       (mockRes as unknown) as Response,
       () => {},

@@ -1,4 +1,4 @@
-import { DatabaseException } from '../exceptions';
+import { ConflictError } from '../exceptions';
 import logger from '../logger';
 import { ICar, Car } from '../models/car.model';
 
@@ -18,7 +18,7 @@ const CarController = {
 
       logger.info({ message: `New car added`, carDoc });
     } catch (err) {
-      throw new DatabaseException(`Error while adding a new car`);
+      throw new ConflictError(`Error while adding a new car`);
     }
 
     return carDoc;
@@ -33,7 +33,7 @@ const CarController = {
         logger.info({ message: `Car deleted ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException(`Error while deleting car`);
+      throw new ConflictError(`Error while deleting car`);
     }
 
     return result;
@@ -48,7 +48,7 @@ const CarController = {
         logger.info({ message: `getting car ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException(`Error while getting car`);
+      throw new ConflictError(`Error while getting car`);
     }
 
     return carDoc;
@@ -69,7 +69,7 @@ const CarController = {
 
       logger.info({ message: 'Getting cars collection' });
     } catch (err) {
-      throw new DatabaseException(`Error while getting cars collection`);
+      throw new ConflictError(`Error while getting cars collection`);
     }
 
     return carDocs;
@@ -84,7 +84,7 @@ const CarController = {
         logger.info({ message: `car updated ${carId}` });
       }
     } catch (err) {
-      throw new DatabaseException(`Error while updating car`);
+      throw new ConflictError(`Error while updating car`);
     }
 
     return result;

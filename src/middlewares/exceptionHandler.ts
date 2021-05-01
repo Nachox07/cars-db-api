@@ -1,28 +1,36 @@
 import { ErrorRequestHandler } from 'express';
 import { ValidationError } from 'express-json-validator-middleware';
 import {
-  DatabaseException,
-  UnauthorizedException,
-  ForbiddenException,
+  ConflictError,
+  ForbiddenError,
+  NotFoundError,
+  UnauthorizedError,
 } from '../exceptions';
 import logger from '../logger';
 
-const publicErrors: Record<string, { status: number; message: string }> = {
-  [DatabaseException.name]: {
-    status: 500,
-    message: 'Error while processing the request',
+const publicErrors: Record<
+  string,
+  { status: number; message: (str: string) => string }
+> = {
+  [ConflictError.name]: {
+    status: 409,
+    message: () => 'Error while processing the request',
   },
-  [ForbiddenException.name]: {
+  [ForbiddenError.name]: {
     status: 403,
-    message: 'Wrong authorization key',
+    message: () => 'Wrong authorization key',
   },
-  [UnauthorizedException.name]: {
+  [NotFoundError.name]: {
+    status: 404,
+    message: (str) => str,
+  },
+  [UnauthorizedError.name]: {
     status: 401,
-    message: 'Authorization information needs to be provided',
+    message: () => 'Authorization information needs to be provided',
   },
   default: {
     status: 500,
-    message: 'System error',
+    message: () => 'System error',
   },
 };
 
@@ -46,7 +54,9 @@ export const exceptionHandler: ErrorRequestHandler = (
 
   const publicError = publicErrors[err.name] || publicErrors.default;
 
-  return res.status(publicError.status).send({ error: publicError.message });
+  return res
+    .status(publicError.status)
+    .send({ error: publicError.message(err.message) });
 };
 
 export default exceptionHandler;
