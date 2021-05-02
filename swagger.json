@@ -409,6 +409,7 @@
     "schemas": {
       "CarData": {
         "type": "object",
+        "description": "`ICar` interface that is used for car creation and update",
         "properties": {
           "brand": {
             "type": "string",
@@ -441,6 +442,7 @@
         }
       },
       "CarUpdate": {
+        "description": "Payload used for update as minimun of properties to update is one",
         "allOf": [
           {
             "$ref": "#/components/schemas/CarData"
@@ -453,6 +455,7 @@
       },
       "CarMetadata": {
         "type": "object",
+        "description": "Car DB entry metada",
         "properties": {
           "_id": {
             "type": "string",
@@ -472,6 +475,7 @@
         }
       },
       "CarDatabaseEntry": {
+        "description": "Car DB entry data",
         "allOf": [
           {
             "$ref": "#/components/schemas/CarData"
