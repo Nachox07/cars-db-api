@@ -32,6 +32,9 @@ export const carSchema: ValidateFunction = {
       type: 'number',
     },
   },
+  additionalproperties: false,
+  maxProperties: 5,
+  minProperties: 4,
 };
 
 // At least one property must be passed
@@ -55,4 +58,7 @@ export const updateCarSchema: ValidateFunction = {
       required: ['year'],
     },
   ],
+  additionalproperties: false,
+  maxProperties: 5,
+  minProperties: 1,
 };

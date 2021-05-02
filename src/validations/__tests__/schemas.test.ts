@@ -59,6 +59,19 @@ describe('schemas', () => {
       ).toEqual(false);
     });
 
+    it('return false when object has additional properties with min/max', () => {
+      expect(
+        validate({
+          brand: 'BMW',
+          carModel: 'Series 4',
+          color: 'Dark blue',
+          year: 2016,
+          specs: ['M Package'],
+          foo: 'bar',
+        }),
+      ).toEqual(false);
+    });
+
     it('return false when specs fields contains duplicates', () => {
       expect(
         validate({
@@ -107,6 +120,19 @@ describe('schemas', () => {
       expect(
         validate({
           specs: ['M Package', 'M Package'],
+        }),
+      ).toEqual(false);
+    });
+
+    it('return false when object has additional properties with max', () => {
+      expect(
+        validate({
+          brand: 'BMW',
+          carModel: 'Series 4',
+          color: 'Dark blue',
+          year: 2016,
+          specs: ['M Package'],
+          foo: 'bar',
         }),
       ).toEqual(false);
     });

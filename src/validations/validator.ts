@@ -3,7 +3,10 @@ import { ValidateFunction, Validator } from 'express-json-validator-middleware';
 
 const { ObjectId } = mongoose.Types;
 
-const validator = new Validator({ allErrors: true });
+const validator = new Validator({
+  allErrors: true,
+  removeAdditional: 'all',
+});
 
 // @ts-ignore ajv does not take part of the type
 validator.ajv.addKeyword('objectId', {
