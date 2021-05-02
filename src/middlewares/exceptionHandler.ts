@@ -4,6 +4,7 @@ import {
   ConflictError,
   ForbiddenError,
   NotFoundError,
+  ServiceUnavailableError,
   UnauthorizedError,
 } from '../exceptions';
 import logger from '../logger';
@@ -24,6 +25,10 @@ const publicErrors: Record<
     status: 404,
     message: (str) => str,
   },
+  [ServiceUnavailableError.name]: {
+    status: 503,
+    message: () => 'Service experiencing issues. Try later',
+  },
   [UnauthorizedError.name]: {
     status: 401,
     message: () => 'Authorization information needs to be provided',
@@ -36,7 +41,7 @@ const publicErrors: Record<
 
 export const exceptionHandler: ErrorRequestHandler = (
   err,
-  req,
+  _req,
   res,
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   _,

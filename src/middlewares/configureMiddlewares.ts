@@ -3,7 +3,6 @@ import helmet from 'helmet';
 import expressPino from 'express-pino-logger';
 import swaggerUi from 'swagger-ui-express';
 import logger from '../logger';
-import authorizationHandler from './authorizationHandler';
 import configuration from '../config';
 
 const configureMiddlewares = (app: Application) => {
@@ -23,7 +22,6 @@ const configureMiddlewares = (app: Application) => {
       logger,
     }),
   );
-  app.use(authorizationHandler);
 };
 
 export default configureMiddlewares;

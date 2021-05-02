@@ -1,15 +1,22 @@
 import { Application, Router } from 'express';
+import mongoose from 'mongoose';
 import CarController from './controllers/car.controller';
 import validator from './validations/validator';
 import { carIdSchema, carSchema, updateCarSchema } from './validations/schemas';
-import { ConflictError, NotFoundError } from './exceptions';
+import {
+  ConflictError,
+  NotFoundError,
+  ServiceUnavailableError,
+} from './exceptions';
+import authorizationHandler from './middlewares/authorizationHandler';
+import config from './config';
 
 const router = Router();
 
 const configureRoutes = async (app: Application) => {
   app
     .route('/cars')
-    .get(async (req, res, next) => {
+    .get(authorizationHandler, async (req, res, next) => {
       let cars;
 
       try {
@@ -18,30 +25,35 @@ const configureRoutes = async (app: Application) => {
         return next(err);
       }
 
-      return res.status(200).json(cars);
+      return res.send(cars);
     })
-    .post(validator.validate({ body: carSchema }), async (req, res, next) => {
-      let carDoc;
+    .post(
+      authorizationHandler,
+      validator.validate({ body: carSchema }),
+      async (req, res, next) => {
+        let carDoc;
 
-      try {
-        carDoc = await CarController.addCar(req.body);
-      } catch (err) {
-        return next(err);
-      }
+        try {
+          carDoc = await CarController.addCar(req.body);
+        } catch (err) {
+          return next(err);
+        }
 
-      if (carDoc) {
-        res.location(`http://localhost:8080/cars/${carDoc?._id}`);
-        return res.status(201).json(carDoc);
-      }
+        if (carDoc) {
+          res.location(`http://localhost:8080/cars/${carDoc?._id}`);
+          return res.status(201).json(carDoc);
+        }
 
-      return next(
-        new ConflictError('There was an error processing your request'),
-      );
-    });
+        return next(
+          new ConflictError('There was an error processing your request'),
+        );
+      },
+    );
 
   app
     .route('/cars/:carId')
     .get(
+      authorizationHandler,
       validator.validate({ params: carIdSchema }),
       async (req, res, next) => {
         let result;
@@ -53,13 +65,14 @@ const configureRoutes = async (app: Application) => {
         }
 
         if (result) {
-          return res.status(200).json(result);
+          return res.send(result);
         }
 
         return next(new NotFoundError('Car was not found'));
       },
     )
     .patch(
+      authorizationHandler,
       validator.validate({ params: carIdSchema, body: updateCarSchema }),
       async (req, res, next) => {
         let result;
@@ -77,6 +90,7 @@ const configureRoutes = async (app: Application) => {
       },
     )
     .delete(
+      authorizationHandler,
       validator.validate({ params: carIdSchema }),
       async (req, res, next) => {
         let result;
@@ -93,6 +107,23 @@ const configureRoutes = async (app: Application) => {
         return next(new NotFoundError('Car was not found'));
       },
     );
+
+  app.get('/healthcheck', async (_req, res, next) => {
+    const healthcheck = {
+      uptime: process.uptime(),
+      message: 'OK',
+      timestamp: Date.now(),
+      databaseConnectionStatus: mongoose.connection.readyState
+        ? 'connected'
+        : 'disconnected',
+      appConfig: config,
+    };
+    try {
+      return res.send(healthcheck);
+    } catch (e) {
+      return next(new ServiceUnavailableError(e));
+    }
+  });
 
   app.use(router);
 };

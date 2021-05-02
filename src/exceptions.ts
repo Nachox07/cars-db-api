@@ -34,6 +34,18 @@ export class NotFoundError extends Error {
   }
 }
 
+export class ServiceUnavailableError extends Error {
+  constructor(message: string) {
+    super(message);
+
+    if (Error.captureStackTrace) {
+      Error.captureStackTrace(this, ServiceUnavailableError);
+    }
+
+    this.name = this.constructor.name;
+  }
+}
+
 export class UnauthorizedError extends Error {
   constructor(message: string) {
     super(message);

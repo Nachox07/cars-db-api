@@ -81,6 +81,29 @@ describe('cars-db-api integration test', () => {
     });
   });
 
+  describe('healthcheck', () => {
+    it('return expected healthcheck info', async () => {
+      const { body } = await request(app)
+        .get(`/healthcheck`)
+        .set('Accept', 'application/json')
+        .expect(200);
+
+      expect(body).toEqual(
+        expect.objectContaining({
+          appConfig: {
+            apiKey: '123456',
+            databaseUrl: config.databaseUrl,
+            swaggerEnabled: 'true',
+          },
+          databaseConnectionStatus: 'connected',
+          message: 'OK',
+        }),
+      );
+      expect(body.timestamp).toBeDefined();
+      expect(body.uptime).toBeDefined();
+    });
+  });
+
   describe('add car action', () => {
     it('add a car to db', async () => {
       let carId = '';
