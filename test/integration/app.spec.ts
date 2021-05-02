@@ -90,11 +90,7 @@ describe('cars-db-api integration test', () => {
 
       expect(body).toEqual(
         expect.objectContaining({
-          appConfig: {
-            apiKey: '123456',
-            databaseUrl: config.databaseUrl,
-            swaggerEnabled: 'true',
-          },
+          appConfig: config,
           databaseConnectionStatus: 'connected',
           message: 'OK',
         }),
