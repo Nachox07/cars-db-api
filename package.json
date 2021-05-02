@@ -19,7 +19,13 @@
     "cover:integration": "LOG_LEVEL=silent yarn test:integration --coverage",
     "cover:report": "nyc report --reporter html --reporter text -t coverage --report-dir coverage/summary",
     "cover": "run-p cover:unit cover:integration && yarn cover:report",
-    "prettier:fix": "prettier -w ./src/**/*.ts"
+    "prettier:fix": "prettier -w ./src/**/*.ts",
+    "co": "cz"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
   },
   "repository": {
     "type": "git",
@@ -43,6 +49,8 @@
     "@types/supertest": "^2.0.11",
     "@typescript-eslint/eslint-plugin": "^4.4.1",
     "@typescript-eslint/parser": "^4.0.0",
+    "commitizen": "^4.2.3",
+    "cz-conventional-changelog": "^3.3.0",
     "eslint": "^7.25.0",
     "eslint-config-airbnb-typescript": "^12.3.1",
     "eslint-config-prettier": "^8.3.0",

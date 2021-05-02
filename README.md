@@ -14,6 +14,7 @@
       - [docker-compose](#docker-compose)
     - [Run it locally and create the configuration file](#run-it-locally-and-create-the-configuration-file)
     - [Build the app](#build-the-app)
+    - [Commit](#commit)
     - [Run tests](#run-tests)
       - [Test linter](#test-linter)
       - [Test types](#test-types)
@@ -97,7 +98,7 @@ The following GitHub workflow is running in every push to `main` branch:
 
 ### Run it with Docker (recommended)
 
-This is the recommended option as it is quick and safe to run the whole API plus DB
+This is the recommended option as it is quick and safe to run the whole API plus DB.
 
 #### docker-compose
 
@@ -139,6 +140,10 @@ It will build and run the app
 To build the app and create a `./dist` run:
 
 `yarn build`
+
+### Commit
+
+Use `yarn co` to run Commitizen. It will help to make a more descriptive commit history and to respect the commit format.
 
 ### Run tests
 
