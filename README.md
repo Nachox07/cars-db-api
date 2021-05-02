@@ -1,3 +1,25 @@
+- [cars-db-api](#cars-db-api)
+  - [Introduction](#introduction)
+  - [Data models and endpoints](#data-models-and-endpoints)
+  - [Prerequisites](#prerequisites)
+  - [How-To](#how-to)
+    - [Do the setup](#do-the-setup)
+    - [Run it with Docker (recommended)](#run-it-with-docker--recommended-)
+      - [docker-compose](#docker-compose)
+    - [Run it locally and create the configuration file](#run-it-locally-and-create-the-configuration-file)
+    - [Build the app](#build-the-app)
+    - [Run tests](#run-tests)
+      - [Test linter](#test-linter)
+      - [Test types](#test-types)
+      - [Unit tests](#unit-tests)
+      - [Integration tests](#integration-tests)
+      - [Run all tests](#run-all-tests)
+    - [Get coverage report](#get-coverage-report)
+    - [Format every file with Prettier](#format-every-file-with-prettier)
+    - [Clean dist folder and installation](#clean-dist-folder-and-installation)
+      - [To clean the installation](#to-clean-the-installation)
+      - [To clean the Build](#to-clean-the-build)
+
 # cars-db-api
 
 ## Introduction

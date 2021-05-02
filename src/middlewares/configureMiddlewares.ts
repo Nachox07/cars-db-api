@@ -2,13 +2,17 @@ import express, { Application } from 'express';
 import helmet from 'helmet';
 import expressPino from 'express-pino-logger';
 import swaggerUi from 'swagger-ui-express';
-import swaggerDocument from '../../swagger.json';
 import logger from '../logger';
 import authorizationHandler from './authorizationHandler';
 
 const configureMiddlewares = (app: Application) => {
   if (process.env.NODE_ENV !== 'production') {
-    app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+    app.use(
+      '/api-docs',
+      swaggerUi.serve,
+      // eslint-disable-next-line global-require
+      swaggerUi.setup(require('../../swagger.json')),
+    );
   }
 
   app.use(helmet());
