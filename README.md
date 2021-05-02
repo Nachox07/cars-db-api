@@ -123,6 +123,7 @@ Create a `.env` with the desired config to initiate the API:
 ```sh
 API_KEY='123456'
 DATABASE_URL='mongodb://localhost:27017/cars-db'
+SWAGGER_ENABLED='true'
 ```
 
 Run the following commands to execute the app for development. It will reload on file change:
