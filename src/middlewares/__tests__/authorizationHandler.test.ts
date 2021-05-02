@@ -1,10 +1,11 @@
 import { Request, Response } from 'express';
+import config from '../../config';
 import { ForbiddenError, UnauthorizedError } from '../../exceptions';
 import authorizationHandler from '../authorizationHandler';
 
 const mockNext = jest.fn();
 
-process.env.API_KEY = '123456';
+config.apiKey = '123456';
 
 describe('authorizationHandler', () => {
   beforeEach(() => {

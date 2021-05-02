@@ -1,4 +1,5 @@
 import { Handler } from 'express';
+import config from '../config';
 import { UnauthorizedError, ForbiddenError } from '../exceptions';
 
 const authorizationHandler: Handler = (req, res, next) => {
@@ -8,7 +9,7 @@ const authorizationHandler: Handler = (req, res, next) => {
     );
   }
 
-  if (req.headers['x-api-key'] !== process.env.API_KEY) {
+  if (req.headers['x-api-key'] !== config.apiKey) {
     return next(new ForbiddenError('Wrong authorization key'));
   }
 

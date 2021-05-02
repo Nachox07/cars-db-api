@@ -3,6 +3,7 @@ import request from 'supertest';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { init, close } from '../../src/server';
 import { Car, ICar } from '../../src/models/car.model';
+import config from '../../src/config';
 
 process.env.API_KEY = '123456';
 
@@ -25,11 +26,17 @@ const mockCar2 = {
   year: 2021,
 } as ICar;
 
+// set API key to use during tests
+config.apiKey = '123456';
+
 describe('cars-db-api integration test', () => {
   beforeEach(async () => {
     mongod = new MongoMemoryServer();
 
     const uri = await mongod.getUri();
+
+    // set databaseUrl as it will change for every test (random port, db name)
+    config.databaseUrl = uri;
 
     process.env.DATABASE_URL = uri;
 
