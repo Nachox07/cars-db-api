@@ -4,6 +4,9 @@
   - [Architecture](#architecture)
     - [Folder structure and files](#folder-structure-and-files)
     - [Error handling](#error-handling)
+  - [CI/CD](#ci-cd)
+    - [Continuous Integration workflow](#continuous-integration-workflow)
+    - [Continuous Deployment workflow](#continuous-deployment-workflow)
   - [Prerequisites](#prerequisites)
   - [How-To](#how-to)
     - [Do the setup](#do-the-setup)
@@ -66,6 +69,18 @@ The structure hierarchy is important to understand and to be followed as it is p
 ### Error handling
 
 It is centralised by the `exceptionHandler.ts` middleware where `exceptions.ts` thrown are mapped to status code and response message error. Then the response and error logging is done. It is recommended to throw every error with this flow.
+
+## CI/CD
+
+### Continuous Integration workflow
+
+The following GitHub workflow is running in every push to `main` branch:
+
+- `build-and-test` in charge of build and testing the app. It generates the report coverage as well.
+
+### Continuous Deployment workflow
+
+- TBD
 
 ## Prerequisites
 
