@@ -1,3 +1,5 @@
+![CI workflow](https://github.com/Nachox07/cars-db-api/actions/workflows/build-and-test.yml/badge.svg)
+
 - [cars-db-api](#cars-db-api)
   - [Introduction](#introduction)
   - [Data models and endpoints](#data-models-and-endpoints)
