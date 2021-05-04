@@ -1,4 +1,5 @@
 import express, { Application } from 'express';
+import compression from 'compression';
 import helmet from 'helmet';
 import expressPino from 'express-pino-logger';
 import swaggerUi from 'swagger-ui-express';
@@ -15,8 +16,16 @@ const configureMiddlewares = (app: Application) => {
     );
   }
 
+  // security middleware
   app.use(helmet());
+
+  // add gzip compression
+  app.use(compression());
+
+  // support for body in requests
   app.use(express.json());
+
+  // requests logger
   app.use(
     expressPino({
       logger,
