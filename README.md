@@ -1,4 +1,5 @@
 ![CI workflow](https://github.com/Nachox07/cars-db-api/actions/workflows/build-and-test.yml/badge.svg)
+![Dependency status](https://img.shields.io/david/nachox07/cars-db-api)
 
 - [cars-db-api](#cars-db-api)
   - [Introduction](#introduction)
