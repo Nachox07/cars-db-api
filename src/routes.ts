@@ -1,5 +1,6 @@
 import { Application, Router } from 'express';
 import mongoose from 'mongoose';
+import apicache from 'apicache';
 import CarController from './controllers/car.controller';
 import validator from './validations/validator';
 import { carIdSchema, carSchema, updateCarSchema } from './validations/schemas';
@@ -42,6 +43,10 @@ const configureRoutes = async (app: Application) => {
 
         if (carDoc) {
           res.location(`http://localhost:8080/cars/${carDoc?._id}`);
+
+          apicache.clear(['/cars']);
+          apicache.clear([`/cars/${carDoc?._id}`]);
+
           return res.status(201).json(carDoc);
         }
 
@@ -78,8 +83,12 @@ const configureRoutes = async (app: Application) => {
       validator.validate({ params: carIdSchema, body: updateCarSchema }),
       async (req, res, next) => {
         let result;
+
         try {
           result = await CarController.updateCar(req.params.carId, req.body);
+
+          apicache.clear(['/cars']);
+          apicache.clear([`/cars/${req.params.carId}`]);
         } catch (err) {
           return next(err);
         }
@@ -98,6 +107,9 @@ const configureRoutes = async (app: Application) => {
         let result;
         try {
           result = await CarController.deleteCar(req.params.carId);
+
+          apicache.clear(['/cars']);
+          apicache.clear([`/cars/${req.params.carId}`]);
         } catch (err) {
           return next(err);
         }
