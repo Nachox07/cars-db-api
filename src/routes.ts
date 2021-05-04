@@ -10,13 +10,14 @@ import {
 } from './exceptions';
 import authorizationHandler from './middlewares/authorizationHandler';
 import config from './config';
+import cache from './middlewares/cacheMiddleware';
 
 const router = Router();
 
 const configureRoutes = async (app: Application) => {
   app
     .route('/cars')
-    .get(authorizationHandler, async (req, res, next) => {
+    .get(authorizationHandler, cache('5 minutes'), async (req, res, next) => {
       let cars;
 
       try {
@@ -55,6 +56,7 @@ const configureRoutes = async (app: Application) => {
     .get(
       authorizationHandler,
       validator.validate({ params: carIdSchema }),
+      cache('5 minutes'),
       async (req, res, next) => {
         let result;
 
@@ -108,7 +110,7 @@ const configureRoutes = async (app: Application) => {
       },
     );
 
-  app.get('/healthcheck', async (_req, res, next) => {
+  app.get('/healthcheck', cache('1 minutes'), async (_req, res, next) => {
     const healthcheck = {
       uptime: process.uptime(),
       message: 'OK',

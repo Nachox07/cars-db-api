@@ -42,6 +42,7 @@ This repository contains an implementation for a cars database API backend servi
 - Jest and Supertest for unit and integration tests
 - Mongoose to interact with MongoDB
 - AJV for request data validation
+- apicache for caching
 
 ## Data models and endpoints
 
@@ -62,7 +63,7 @@ The structure hierarchy is important to understand and to be followed as it is p
   - `middlewares` contain the ExceptionHandler and Authorization Handler middlewares plus config adding others such as Swagger and Helmet
   - `models` contain the Mongoose model plus types
   - `config.ts` single point with all the app configuration variables extracted with dotenv and default values
-  - `routes.ts` contain the API endpoints with response and exceptions to throw based on controller logic. Can be split to follow the controllers scheme
+  - `routes.ts` contain the API endpoints with response, exceptions to throw based on controller logic and cache definitions. Can be split to follow the controllers scheme
   - `server.ts` initialise the server and do configurations plus DB connection
   - `validations` contain the validator logic and schemas
 - `test` contains tests utils and mocks along with the integration tests
