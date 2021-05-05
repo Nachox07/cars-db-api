@@ -5,8 +5,6 @@ import { init, close } from '../../src/server';
 import { Car, ICar } from '../../src/models/car.model';
 import config from '../../src/config';
 
-process.env.API_KEY = '123456';
-
 let app: Server | null;
 let mongod: MongoMemoryServer;
 
@@ -74,7 +72,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(body).toEqual([]);
@@ -109,7 +107,7 @@ describe('cars-db-api integration test', () => {
         .post('/cars')
         .send(mockCar)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(201);
 
       expect(addBody).toEqual(
@@ -125,7 +123,7 @@ describe('cars-db-api integration test', () => {
       const { body: getBody } = await request(app)
         .get(`/cars/${carId}`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(getBody).toEqual(
@@ -145,7 +143,7 @@ describe('cars-db-api integration test', () => {
           specs: ['M Package', 'M Package'],
         })
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -172,7 +170,7 @@ describe('cars-db-api integration test', () => {
           brand: 'Mercedes',
         })
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -230,7 +228,7 @@ describe('cars-db-api integration test', () => {
       await request(app)
         .delete(`/cars/${carDoc._id}`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(204);
     });
 
@@ -238,7 +236,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .delete(`/cars/${nonExistingCarId}`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(404);
 
       expect(body).toEqual({ error: 'Car was not found' });
@@ -248,7 +246,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .delete('/cars/123')
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -279,7 +277,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars/${carDoc._id}`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(body).toEqual(expect.objectContaining(mockCar));
@@ -291,7 +289,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars/${nonExistingCarId}`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(404);
 
       expect(body).toEqual({ error: 'Car was not found' });
@@ -301,7 +299,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get('/cars/123')
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -325,7 +323,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(body).toEqual([]);
@@ -346,7 +344,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .get(`/cars`)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(body[0]).toEqual({
@@ -381,7 +379,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${carDoc._id}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(204);
 
       // retrieve the car with properties updated
@@ -389,7 +387,7 @@ describe('cars-db-api integration test', () => {
         .get(`/cars/${carDoc._id}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(200);
 
       expect(body).toEqual(expect.objectContaining(mockUpdatePayload));
@@ -400,7 +398,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${nonExistingCarId}`)
         .send(mockUpdatePayload)
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(404);
 
       expect(body).toEqual({ error: 'Car was not found' });
@@ -411,7 +409,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${nonExistingCarId}`)
         .send({ ...mockUpdatePayload, specs: ['M Package', 'M Package'] })
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -435,7 +433,7 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .patch('/cars/123')
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -527,7 +525,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${carDoc._id}`)
         .send({ specs: {} })
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
@@ -556,7 +554,7 @@ describe('cars-db-api integration test', () => {
         .patch(`/cars/${carDoc._id}`)
         .send({})
         .set('Accept', 'application/json')
-        .set('x-api-key', process.env.API_KEY as string)
+        .set('x-api-key', config.apiKey as string)
         .expect(400);
 
       expect(body).toEqual({
