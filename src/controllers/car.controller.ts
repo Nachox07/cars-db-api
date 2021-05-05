@@ -2,15 +2,18 @@ import { ConflictError } from '../exceptions';
 import logger from '../logger';
 import { ICar, Car } from '../models/car.model';
 
+const carSpecsHaveDuplicates = (specs: ICar['specs'] | undefined) =>
+  specs && new Set(specs).size !== specs.length;
+
 const CarController = {
   addCar: async (car: ICar) => {
     let carDoc: ICar | null = null;
 
-    // Check specs has no duplicates
-    if (car.specs && new Set(car.specs).size !== car.specs.length)
-      return carDoc;
-
     try {
+      // Check specs has no duplicates
+      if (carSpecsHaveDuplicates(car?.specs))
+        throw new Error('specs has duplicates');
+
       carDoc = await new Car({
         ...car,
         creationDate: new Date(),
@@ -74,10 +77,14 @@ const CarController = {
 
     return carDocs;
   },
-  updateCar: async (carId: ICar['_id'], car: Omit<ICar, ICar['_id']>) => {
+  updateCar: async (carId: ICar['_id'], car: Partial<ICar>) => {
     let result: boolean = false;
 
     try {
+      // Check specs has no duplicates
+      if (carSpecsHaveDuplicates(car.specs))
+        throw new Error('specs has duplicates');
+
       result = Boolean(await Car.findByIdAndUpdate(carId, car));
 
       if (result) {

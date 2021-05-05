@@ -56,13 +56,13 @@ describe('CarController', () => {
       });
     });
 
-    it('return null if specs has duplicates', async () => {
-      expect(
-        await CarController.addCar({
+    it('throw controlled exception if specs has duplicates', async () => {
+      await expect(
+        CarController.addCar({
           ...mockCar,
           specs: ['M Package', 'M Package'],
         } as ICar),
-      ).toEqual(null);
+      ).rejects.toThrow('Error while adding a new car');
     });
 
     it('throw controlled exception if something goes wrong', async () => {
@@ -176,6 +176,14 @@ describe('CarController', () => {
 
       expect(await CarController.updateCar(mockCarId, mockCar)).toEqual(false);
       expect(logger.info).toHaveBeenCalledTimes(0);
+    });
+
+    it('throw controlled exception if specs contain duplicates', async () => {
+      await expect(
+        CarController.updateCar(mockCarId, {
+          specs: ['M Package', 'M Package'],
+        }),
+      ).rejects.toThrow('Error while updating car');
     });
 
     it('throw controlled exception if something goes wrong', async () => {

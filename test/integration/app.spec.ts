@@ -141,6 +141,34 @@ describe('cars-db-api integration test', () => {
       const { body } = await request(app)
         .post('/cars')
         .send({
+          ...mockCar,
+          specs: ['M Package', 'M Package'],
+        })
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({
+        body: [
+          {
+            dataPath: '.specs',
+            keyword: 'uniqueItems',
+            message:
+              'should NOT have duplicate items (items ## 1 and 0 are identical)',
+            params: {
+              i: 0,
+              j: 1,
+            },
+            schemaPath: '#/properties/specs/uniqueItems',
+          },
+        ],
+      });
+    });
+
+    it('can not add a car if specs have duplicates', async () => {
+      const { body } = await request(app)
+        .post('/cars')
+        .send({
           brand: 'Mercedes',
         })
         .set('Accept', 'application/json')
@@ -376,6 +404,31 @@ describe('cars-db-api integration test', () => {
         .expect(404);
 
       expect(body).toEqual({ error: 'Car was not found' });
+    });
+
+    it('do not update a car when specs have duplicates', async () => {
+      const { body } = await request(app)
+        .patch(`/cars/${nonExistingCarId}`)
+        .send({ ...mockUpdatePayload, specs: ['M Package', 'M Package'] })
+        .set('Accept', 'application/json')
+        .set('x-api-key', process.env.API_KEY as string)
+        .expect(400);
+
+      expect(body).toEqual({
+        body: [
+          {
+            dataPath: '.specs',
+            keyword: 'uniqueItems',
+            message:
+              'should NOT have duplicate items (items ## 1 and 0 are identical)',
+            params: {
+              i: 0,
+              j: 1,
+            },
+            schemaPath: '#/properties/specs/uniqueItems',
+          },
+        ],
+      });
     });
 
     it('can not update a car if car ID is invalid', async () => {

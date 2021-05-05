@@ -10,7 +10,12 @@ export default {
     ],
   ],
   coverageDirectory: '<rootDir>/coverage',
-  coveragePathIgnorePatterns: ['index.ts', 'cacheMiddleware.ts'],
+  coveragePathIgnorePatterns: [
+    'index.ts',
+    'cacheMiddleware.ts',
+    'logger.ts',
+    'exceptions.ts',
+  ],
   resetModules: process.env.TEST_TYPE === 'unit',
   setupFiles: process.env.TEST_TYPE === 'unit' ? [`./test/mocks.ts`] : [],
   testEnvironment: 'node',
