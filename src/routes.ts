@@ -130,7 +130,7 @@ const configureRoutes = async (app: Application) => {
       databaseConnectionStatus: mongoose.connection.readyState
         ? 'connected'
         : 'disconnected',
-      appConfig: config,
+      ...(process.env.NODE_ENV !== 'production' ? { appConfig: config } : {}),
     };
     try {
       return res.send(healthcheck);
