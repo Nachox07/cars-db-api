@@ -5,12 +5,13 @@ import logger from './logger';
 import configureMiddlewares from './middlewares/configureMiddlewares';
 import configureRoutes from './routes';
 import { exceptionHandler } from './middlewares/exceptionHandler';
+import config from './config';
 
 let serverInstance: Server;
 
 const start = async () => {
   const app = express();
-  const port = process.env.PORT || 8080;
+  const { port } = config.server;
 
   // Initialise DB connection
   await createDbConnection();
@@ -27,16 +28,14 @@ const start = async () => {
   return serverInstance;
 };
 
-export const init = () => {
+export const init = async () => {
   try {
     logger.info('Starting cars-db-api');
-    return start();
-  } catch (error) {
-    logger.error(
-      'Error while starting cars-db-api:',
-      error.message,
-      error.stack,
-    );
+    return await start();
+  } catch (err) {
+    logger.error({
+      message: `Error while starting cars-db-api: ${err.message}, ${err.stack}`,
+    });
     return null;
   }
 };
