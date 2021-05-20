@@ -62,7 +62,7 @@ describe('CarController', () => {
           ...mockCar,
           specs: ['M Package', 'M Package'],
         } as ICar),
-      ).rejects.toThrow('Error while adding a new car');
+      ).rejects.toThrow('Error: specs has duplicates');
     });
 
     it('throw controlled exception if something goes wrong', async () => {
@@ -71,7 +71,7 @@ describe('CarController', () => {
       );
 
       await expect(CarController.addCar(mockCar)).rejects.toThrow(
-        'Error while adding a new car',
+        'Error: Unexpected error',
       );
     });
   });
@@ -101,7 +101,7 @@ describe('CarController', () => {
       );
 
       await expect(CarController.deleteCar(mockCarId)).rejects.toThrow(
-        'Error while deleting car',
+        'Error: Unexpected error',
       );
     });
   });
@@ -129,7 +129,7 @@ describe('CarController', () => {
       );
 
       await expect(CarController.getCar(mockCarId)).rejects.toThrow(
-        'Error while getting car',
+        'Error: Unexpected error',
       );
     });
   });
@@ -150,7 +150,7 @@ describe('CarController', () => {
       );
 
       await expect(CarController.getCars()).rejects.toThrow(
-        'Error while getting cars collection',
+        'Error: Unexpected error',
       );
     });
   });
@@ -183,7 +183,7 @@ describe('CarController', () => {
         CarController.updateCar(mockCarId, {
           specs: ['M Package', 'M Package'],
         }),
-      ).rejects.toThrow('Error while updating car');
+      ).rejects.toThrow('Error: specs has duplicates');
     });
 
     it('throw controlled exception if something goes wrong', async () => {
@@ -192,7 +192,7 @@ describe('CarController', () => {
       );
 
       await expect(CarController.updateCar(mockCarId, mockCar)).rejects.toThrow(
-        'Error while updating car',
+        'Error: Unexpected error',
       );
     });
   });

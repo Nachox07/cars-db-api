@@ -21,7 +21,7 @@ const CarController = {
 
       logger.info({ message: `New car added`, carDoc });
     } catch (err) {
-      throw new ConflictError(`Error while adding a new car`);
+      throw new ConflictError(err);
     }
 
     return carDoc;
@@ -36,7 +36,7 @@ const CarController = {
         logger.info({ message: `Car deleted ${carId}` });
       }
     } catch (err) {
-      throw new ConflictError(`Error while deleting car`);
+      throw new ConflictError(err);
     }
 
     return result;
@@ -51,7 +51,7 @@ const CarController = {
         logger.info({ message: `getting car ${carId}` });
       }
     } catch (err) {
-      throw new ConflictError(`Error while getting car`);
+      throw new ConflictError(err);
     }
 
     return carDoc;
@@ -72,7 +72,7 @@ const CarController = {
 
       logger.info({ message: 'Getting cars collection' });
     } catch (err) {
-      throw new ConflictError(`Error while getting cars collection`);
+      throw new ConflictError(err);
     }
 
     return carDocs;
@@ -91,7 +91,7 @@ const CarController = {
         logger.info({ message: `car updated ${carId}` });
       }
     } catch (err) {
-      throw new ConflictError(`Error while updating car`);
+      throw new ConflictError(err);
     }
 
     return result;
